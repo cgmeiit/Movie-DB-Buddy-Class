@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MovieDB1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="CustID" />
+    </Key>
+    <Property Name="CustID" Type="int" Nullable="false" />
+    <Property Name="FName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Phone" Type="nchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="Movies">
+    <Key>
+      <PropertyRef Name="MovieID" />
+    </Key>
+    <Property Name="MovieID" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" />
+    <Property Name="Director" Type="nvarchar" MaxLength="50" />
+    <Property Name="Genre" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Rentals">
+    <Key>
+      <PropertyRef Name="RentalID" />
+    </Key>
+    <Property Name="RentalID" Type="int" Nullable="false" />
+    <Property Name="CustID" Type="int" />
+    <Property Name="MovieID" Type="int" />
+    <Property Name="Date" Type="date" />
+  </EntityType>
+  <Association Name="FK_Rentals_Customers">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+    <End Role="Rentals" Type="Self.Rentals" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustID" />
+      </Principal>
+      <Dependent Role="Rentals">
+        <PropertyRef Name="CustID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rentals_Movies">
+    <End Role="Movies" Type="Self.Movies" Multiplicity="0..1" />
+    <End Role="Rentals" Type="Self.Rentals" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movies">
+        <PropertyRef Name="MovieID" />
+      </Principal>
+      <Dependent Role="Rentals">
+        <PropertyRef Name="MovieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MovieDB1ModelStoreContainer">
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Movies" EntityType="Self.Movies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rentals" EntityType="Self.Rentals" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Rentals_Customers" Association="Self.FK_Rentals_Customers">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Rentals" EntitySet="Rentals" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rentals_Movies" Association="Self.FK_Rentals_Movies">
+      <End Role="Movies" EntitySet="Movies" />
+      <End Role="Rentals" EntitySet="Rentals" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
